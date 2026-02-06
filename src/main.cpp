@@ -6,24 +6,25 @@
 #include "pros/adi.hpp"
 #include "pros/misc.h"
 #include "pros/rotation.hpp"
-#include "lemlib-tarball/api.hpp"
+#include <cstdio>
+//#include "lemlib-tarball/api.hpp"
 
 pros::Controller master{CONTROLLER_MASTER};	
 pros::MotorGroup driveL_train({-13, -11, 12}, pros::v5::MotorGears::blue);//UPDATE WITH MOTOR WIRING CHANGING
 pros::MotorGroup driveR_train({18, 20, -19}, pros::v5::MotorGears::blue);
 
-pros::Motor frontstack(10, pros::v5::MotorGears::blue);
-pros::Motor backstack(8, pros::v5::MotorGears::green);
-pros::Motor topstack(9, pros::v5::MotorGears::green);
+pros::Motor intake1(10, pros::v5::MotorGears::blue);
+//pros::Motor backstack(8, pros::v5::MotorGears::green);
+pros::Motor intake2(-9, pros::v5::MotorGears::green);
 
-pros::IMU imu(21);
+pros::IMU imu(17);
 
-pros::Rotation Horizontal_rotation(100);
-lemlib::TrackingWheel horizontal_tracking(&Horizontal_rotation, lemlib::Omniwheel::NEW_275, -2.625);//configure offset
+pros::Rotation Horizontal_rotation(16);
+lemlib::TrackingWheel horizontal_tracking(&Horizontal_rotation, lemlib::Omniwheel::NEW_275, -4.25);//configure offset
 
 
-pros::Rotation Vertical_rotation(100);
-lemlib::TrackingWheel vertical_tracking(&Vertical_rotation, lemlib::Omniwheel::NEW_275, -2.625);//configure offset
+pros::Rotation Vertical_rotation(4);
+lemlib::TrackingWheel vertical_tracking(&Vertical_rotation, lemlib::Omniwheel::NEW_275, -0.4);//configure offset
 
 bool matchloaderState = false;
 int IntakeState = 0;
@@ -46,7 +47,7 @@ lemlib::Drivetrain drivetrain(&driveL_train, // left motor group
 );
 
 // lateral PID controller
-lemlib::ControllerSettings lateral_controller(10, // proportional gain (kP)
+lemlib::ControllerSettings lateral_controller(15, // proportional gain (kP)
                                               0, // integral gain (kI)
                                               3, // derivative gain (kD)
                                               3, // anti windup
@@ -58,14 +59,14 @@ lemlib::ControllerSettings lateral_controller(10, // proportional gain (kP)
 );
 
 // angular PID controller
-lemlib::ControllerSettings angular_controller(2, // proportional gain (kP)
+lemlib::ControllerSettings angular_controller(1.9, // proportional gain (kP)
                                               0, // integral gain (kI)
                                               10, // derivative gain (kD)
                                               3, // anti windup
                                               1, // small error range, in degrees
-                                              100, // small error range timeout, in milliseconds
+                                              500, // small error range timeout, in milliseconds
                                               3, // large error range, in degrees
-                                              500, // large error range timeout, in milliseconds
+                                              1000, // large error range timeout, in milliseconds
                                               0 // maximum acceleration (slew)
 );
 
@@ -110,6 +111,15 @@ ASSET(Newtest2_txt);
 //RIGHT SIDE ELIMS//
 
 //SKILLS//
+ASSET(Skills1_txt);
+ASSET(Skills2_txt);
+ASSET(Skills3_txt);
+ASSET(Skills4_txt);
+ASSET(Skills5_txt);
+ASSET(Skills6_txt);
+ASSET(Skills7_txt);
+ASSET(Skills8_txt);
+ASSET(Skills9_txt);
 
 void RighSide() {}
 
@@ -119,7 +129,56 @@ void RighSideElims() {}
 
 void LeftSideElims() {}
 
-void Skills() {}
+void Skills() {
+
+	chassis.setPose(47.936, -13.232, 180);
+
+	chassis.follow(Skills1_txt, 15, 5000, true);
+
+	chassis.turnToHeading(90, 1000);
+
+	chassis.follow(Skills2_txt, 15, 5000, true);
+
+	chassis.waitUntilDone();
+	pros::delay(1000);
+
+	chassis.follow(Skills3_txt, 15, 3000, false);
+
+	chassis.waitUntilDone();
+	pros::delay(1000);
+
+	chassis.follow(Skills4_txt, 15, 6000, true);
+
+	chassis.waitUntilDone();
+
+	chassis.turnToHeading(225, 1000);
+
+	chassis.waitUntilDone();
+	pros::delay(1000);
+
+	chassis.follow(Skills5_txt, 15, 10000, true);
+
+	chassis.turnToHeading(270, 1000);
+	chassis.waitUntilDone();
+	pros::delay(1000);
+	chassis.setPose(29,-59, 270);
+
+	chassis.follow(Skills6_txt, 15, 10000, true);
+
+	chassis.turnToHeading(315, 1000);
+
+
+	chassis.follow(Skills7_txt, 15, 10000, true);
+
+	chassis.turnToHeading(270, 1000);
+
+	chassis.follow(Skills8_txt, 15, 5000, true);
+
+	chassis.waitUntilDone();
+	pros::delay(500);
+
+	chassis.follow(Skills9_txt, 15, 5000, false);
+}
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -129,23 +188,21 @@ void Skills() {}
  */
 void initialize() {
 	pros::lcd::initialize(); // initialize brain screen
-	master.set_text(0,5, "Phillipines 4:13");
+	//master.set_text(0,5, "Phillipines 4:13");
     chassis.calibrate(); // calibrate sensors
 
-	//chassis.setPose(0, 0, 0);
+	chassis.setPose(0, 0, 0);
 	
-    /*pros::Task screen_task([&]() {
+    pros::Task screen_task([&]() {
         while (true) {
             // print robot location to the brain screen
             pros::lcd::print(0, "X: %f", chassis.getPose().x); // x
             pros::lcd::print(1, "Y: %f", chassis.getPose().y); // y
             pros::lcd::print(2, "Theta: %f", chassis.getPose().theta); // heading
             // delay to save resources
-			pros::lcd::print(3, "Rotation Sensor: %i", driveL_train.get_actual_velocity());
-			//pros::lcd::print(4, "ADI Vertical: %i", vertical_encoder.get_value());
             pros::delay(20);
         }
-    });*/
+    });
 }
 
 /**
@@ -179,13 +236,13 @@ void competition_initialize() {
  * will be stopped. Re-enabling the robot will restart the task, not re-start it
  * from where it left off.
  */
+
+
 void autonomous() {
 
 	//chassis.calibrate();
-	frontstack.move_velocity(600);
-	topstack.move_velocity(0);
-	backstack.move_velocity(600);
-	pros::delay(500);
+	
+	/*pros::delay(500);
 	
 	chassis.setPose(-44.823, 13.588, 90);
 	//matchloader.set_value(HIGH);
@@ -195,18 +252,17 @@ void autonomous() {
 	chassis.turnToHeading(125, 1000);
 	chassis.follow(Newtest1_txt, 15, 5000, true);
 	pros::delay(500);
-	frontstack.move_velocity(400);
-	topstack.move_velocity(-300);
-	backstack.move_velocity(-600);
+	
 	pros::delay(3000);
 	chassis.follow(Newtest2_txt, 15, 5000, false);
 	chassis.waitUntilDone();
 	chassis.setPose(-45.498, 47.277, 125);
 	chassis.waitUntilDone();
 	chassis.turnToHeading(235, 1000);
-	chassis.waitUntilDone();
-
-
+	chassis.waitUntilDone();*/
+	Skills();
+	//chassis.setPose(0,0,0);
+	//chassis.moveToPose(0, 48, 0, 10000);
 	/*frontstack.move_voltage(0);
 	backstack.move_voltage(0);
 	topstack.move_voltage(0);
@@ -234,6 +290,7 @@ void opcontrol() {
 	descorer.set_value(HIGH);
 	descorerState = false;
 	
+	//chassis.turnToHeading(90, 1000);
 
 	while(true){
 		
@@ -247,99 +304,36 @@ void opcontrol() {
 		{
 			if(IntakeState == 1)
 			{
-				frontstack.move_velocity(0);
-				topstack.move_velocity(0);
-				backstack.move_velocity(0);
+				intake1.move_velocity(600);
+				intake2.move_velocity(600);
 				IntakeState = 0;
 			}
 			else
 			{
-				frontstack.move_velocity(600);
-				topstack.move_velocity(600);
-				backstack.move_velocity(-600);
+				intake1.move_velocity(0);
+				intake2.move_velocity(0);
 				IntakeState = 1;
 			}
-			printf("Intake state=%d intake velocity=%f \n", IntakeState, frontstack.get_actual_velocity());
+			printf("Intake state=%d intake velocity=%f \n", IntakeState, intake1.get_actual_velocity());
 		}
 
-		//MIDDLESTAGE
-		if(master.get_digital_new_press(DIGITAL_A))
-		{
-			if(IntakeState == 2)
-			{
-				frontstack.move_velocity(0);
-				topstack.move_velocity(0);
-				backstack.move_velocity(0);
-				IntakeState = 0;
-			}
-			else if(matchloaderState == true)
-			{
-				frontstack.move_velocity(600);
-				topstack.move_velocity(-600);
-				backstack.move_velocity(-600);
-				IntakeState = 2;
-			}
-			printf("Intake state=%d intake velocity=%f \n", IntakeState, frontstack.get_actual_velocity());
-		}
 
 		//REVERSE INTAKE
-		if(master.get_digital_new_press(DIGITAL_DOWN))
-		{
-			if(IntakeState == 3)
-			{
-				frontstack.move_velocity(0);
-				topstack.move_velocity(0);
-				backstack.move_velocity(0);
-				IntakeState = 0;
-			}
-			else
-			{
-				frontstack.move_velocity(-600);
-				topstack.move_velocity(-600);
-				backstack.move_velocity(600);
-				IntakeState = 3;
-			}			
-			printf("Intake state=%d intake velocity=%f \n", IntakeState, frontstack.get_actual_velocity());
-		}
-
-		//BUCKET INTAKE
-		if(master.get_digital_new_press(DIGITAL_Y))
-		{
-			if(IntakeState == 3)
-			{
-				frontstack.move_velocity(0);
-				topstack.move_velocity(0);
-				backstack.move_velocity(0);
-				IntakeState = 0;
-			}
-			else
-			{
-				frontstack.move_velocity(600);
-				topstack.move_velocity(0);
-				backstack.move_velocity(600);
-				IntakeState = 3;
-			}			
-			printf("Intake state=%d intake velocity=%f \n", IntakeState, frontstack.get_actual_velocity());
-		}
-
-		//BUCKET INTAKE REVERSE
 		if(master.get_digital_new_press(DIGITAL_B))
 		{
 			if(IntakeState == 3)
 			{
-				frontstack.move_velocity(0);
-				topstack.move_velocity(0);
-				backstack.move_velocity(0);
+				intake1.move_velocity(0);
+				intake2.move_velocity(0);
 				IntakeState = 0;
 			}
 			else
 			{
-				frontstack.move_velocity(-600);
-				topstack.move_velocity(0);
-				backstack.move_velocity(-600);
+				intake1.move_velocity(600);
+				intake2.move_velocity(600);
 				IntakeState = 3;
 			}			
-			printf("Intake state=%d intake velocity=%f \n", IntakeState, frontstack.get_actual_velocity());
+			printf("Intake state=%d intake velocity=%f \n", IntakeState, intake1.get_actual_velocity());
 		}
 
 
@@ -377,7 +371,7 @@ void opcontrol() {
 			}
 			printf("Expansion state=%d \n", matchloaderState);
 		}
-		printf("X: %f\n ", chassis.getPose().theta);
+		printf("x: %f, y: %f, theta: %f \n", chassis.getPose().x, chassis.getPose().y, chassis.getPose().theta);
 		//printf("X: %f\n ", chassis.getPose().theta);
 		pros::delay(10);
 	};
