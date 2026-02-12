@@ -120,6 +120,13 @@ ASSET(Skills6_txt);
 ASSET(Skills7_txt);
 ASSET(Skills8_txt);
 ASSET(Skills9_txt);
+ASSET(Skills10_txt);
+ASSET(Skills11_txt);
+ASSET(Skills12_txt);
+ASSET(Skills13_txt);
+ASSET(Skills14_txt);
+ASSET(Skills15_txt);
+ASSET(Skills16_txt);
 
 void RighSide() {}
 
@@ -178,6 +185,36 @@ void Skills() {
 	pros::delay(500);
 
 	chassis.follow(Skills9_txt, 15, 5000, false);
+
+
+	chassis.follow(Skills10_txt, 15, 5000, true);
+
+	chassis.turnToHeading(0, 1000);
+
+	chassis.follow(Skills11_txt, 15, 5000, true);
+
+	chassis.turnToHeading(270, 1000);
+
+	chassis.follow(Skills12_txt, 15, 5000, true);
+
+	chassis.waitUntilDone();
+	pros::delay(500);
+
+	chassis.follow(Skills13_txt, 15, 5000, false);
+
+	chassis.waitUntilDone();
+	pros::delay(500);
+
+	chassis.follow(Skills14_txt, 15, 5000, true);
+
+	chassis.turnToHeading(45, 1000);
+
+	chassis.follow(Skills15_txt, 15, 5000, true);
+
+	chassis.turnToHeading(90, 1000);
+
+	chassis.follow(Skills16_txt, 15, 5000, true);
+
 }
 
 /**
@@ -299,20 +336,20 @@ void opcontrol() {
 
         chassis.arcade(leftY, rightX);
 
-		//TOPSTAGE
+		//Intake
 		if(master.get_digital_new_press(DIGITAL_X))
 		{
-			if(IntakeState == 1)
+			if(IntakeState == 0)
 			{
 				intake1.move_velocity(600);
 				intake2.move_velocity(600);
-				IntakeState = 0;
+				IntakeState = 1;
 			}
 			else
 			{
 				intake1.move_velocity(0);
 				intake2.move_velocity(0);
-				IntakeState = 1;
+				IntakeState = 0;
 			}
 			printf("Intake state=%d intake velocity=%f \n", IntakeState, intake1.get_actual_velocity());
 		}
@@ -321,16 +358,16 @@ void opcontrol() {
 		//REVERSE INTAKE
 		if(master.get_digital_new_press(DIGITAL_B))
 		{
-			if(IntakeState == 3)
+			if(IntakeState != 3)
 			{
-				intake1.move_velocity(0);
-				intake2.move_velocity(0);
-				IntakeState = 0;
+				intake1.move_velocity(-600);
+				intake2.move_velocity(-600);
+				IntakeState = 3;
 			}
 			else
 			{
-				intake1.move_velocity(600);
-				intake2.move_velocity(600);
+				intake1.move_velocity(0);
+				intake2.move_velocity(0);
 				IntakeState = 3;
 			}			
 			printf("Intake state=%d intake velocity=%f \n", IntakeState, intake1.get_actual_velocity());
