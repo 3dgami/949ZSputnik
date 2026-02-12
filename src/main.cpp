@@ -29,9 +29,13 @@ lemlib::TrackingWheel vertical_tracking(&Vertical_rotation, lemlib::Omniwheel::N
 bool matchloaderState = false;
 int IntakeState = 0;
 bool descorerState = false;
+bool IntakePistonAState = 0;
+bool IntakePistonBState = 1;
 
-pros::adi::DigitalOut matchloader('A');
-pros::adi::DigitalOut descorer('B');
+pros::adi::DigitalOut IntakePistonA('A');
+pros::adi::DigitalOut IntakePistonB('B');
+pros::adi::DigitalOut matchloader('C');
+pros::adi::DigitalOut descorer('D');
 
 
 
@@ -145,16 +149,22 @@ void Skills() {
 	chassis.turnToHeading(90, 1000);
 
 	chassis.follow(Skills2_txt, 15, 5000, true);
-
+	matchloader.set_value(HIGH);
+	intake1.move_velocity(600);
+	intake2.move_velocity(600);
 	chassis.waitUntilDone();
 	pros::delay(1000);
 
 	chassis.follow(Skills3_txt, 15, 3000, false);
 
 	chassis.waitUntilDone();
+	IntakePistonB.set_value(HIGH);
 	pros::delay(1000);
 
 	chassis.follow(Skills4_txt, 15, 6000, true);
+	matchloader.set_value(LOW);
+	intake1.move_velocity(0);
+	intake2.move_velocity(0);
 
 	chassis.waitUntilDone();
 
@@ -176,15 +186,27 @@ void Skills() {
 
 
 	chassis.follow(Skills7_txt, 15, 10000, true);
+	matchloader.set_value(HIGH);
+	IntakePistonB.set_value(LOW);
 
 	chassis.turnToHeading(270, 1000);
 
 	chassis.follow(Skills8_txt, 15, 5000, true);
+	intake1.move_velocity(600);
+	intake2.move_velocity(600);
+
 
 	chassis.waitUntilDone();
-	pros::delay(500);
+	pros::delay(1000);
 
 	chassis.follow(Skills9_txt, 15, 5000, false);
+
+	chassis.waitUntilDone();
+	IntakePistonB.set_value(HIGH);
+	pros::delay(1000);
+	matchloader.set_value(LOW);
+	intake1.move_velocity(0);
+	intake2.move_velocity(0);
 
 
 	chassis.follow(Skills10_txt, 15, 5000, true);
@@ -194,16 +216,24 @@ void Skills() {
 	chassis.follow(Skills11_txt, 15, 5000, true);
 
 	chassis.turnToHeading(270, 1000);
+	matchloader.set_value(HIGH);
+	IntakePistonB.set_value(LOW);
 
 	chassis.follow(Skills12_txt, 15, 5000, true);
+	intake1.move_velocity(600);
+	intake2.move_velocity(600);
 
 	chassis.waitUntilDone();
-	pros::delay(500);
+	pros::delay(1000);
 
 	chassis.follow(Skills13_txt, 15, 5000, false);
 
 	chassis.waitUntilDone();
-	pros::delay(500);
+	IntakePistonB.set_value(HIGH);
+	pros::delay(1000);
+	matchloader.set_value(LOW);
+	intake1.move_velocity(0);
+	intake2.move_velocity(0);
 
 	chassis.follow(Skills14_txt, 15, 5000, true);
 
@@ -375,8 +405,43 @@ void opcontrol() {
 
 
 
-		//MATCHLOADER
+		//Intake Piston A
 		if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L1))
+		{
+			if(IntakePistonAState == true)
+			{
+				IntakePistonA.set_value(LOW);
+				IntakePistonAState = false;
+			}
+			else if(IntakePistonAState == false)
+			{
+				IntakePistonA.set_value(HIGH);
+				IntakePistonAState = true;
+			}
+			printf("Expansion state=%d \n", IntakePistonAState);
+		}
+		
+
+
+		//Intake Piston B
+		if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_R1))
+		{
+			if(IntakePistonBState == true)
+			{
+				IntakePistonB.set_value(LOW);
+				IntakePistonBState = false;
+			}
+			else
+			{
+				IntakePistonB.set_value(HIGH);
+				IntakePistonBState = true;
+			}
+			printf("Expansion state=%d \n", IntakePistonBState);
+		}
+
+		
+		//MATCHLOADER
+		if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L2))
 		{
 			if(matchloaderState == true)
 			{
@@ -394,7 +459,7 @@ void opcontrol() {
 
 
 		//Descorer
-		if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_R1))
+		if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_R2))
 		{
 			if(descorerState == true)
 			{
