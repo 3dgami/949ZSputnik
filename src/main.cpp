@@ -13,17 +13,16 @@ pros::Controller master{CONTROLLER_MASTER};
 pros::MotorGroup driveL_train({-13, -11, 12}, pros::v5::MotorGears::blue);//UPDATE WITH MOTOR WIRING CHANGING
 pros::MotorGroup driveR_train({18, 20, -19}, pros::v5::MotorGears::blue);
 
-pros::Motor intake1(10, pros::v5::MotorGears::blue);
-//pros::Motor backstack(8, pros::v5::MotorGears::green);
+pros::Motor intake1(1, pros::v5::MotorGears::blue);
 pros::Motor intake2(-9, pros::v5::MotorGears::green);
 
-pros::IMU imu(17);
+pros::IMU imu(14);
 
-pros::Rotation Horizontal_rotation(16);
+pros::Rotation Horizontal_rotation(17);
 lemlib::TrackingWheel horizontal_tracking(&Horizontal_rotation, lemlib::Omniwheel::NEW_275, -4.25);//configure offset
 
 
-pros::Rotation Vertical_rotation(4);
+pros::Rotation Vertical_rotation(2);
 lemlib::TrackingWheel vertical_tracking(&Vertical_rotation, lemlib::Omniwheel::NEW_275, -0.4);//configure offset
 
 bool matchloaderState = false;
@@ -142,26 +141,32 @@ void LeftSideElims() {}
 
 void Skills() {
 
+	IntakePistonB.set_value(HIGH);
+
 	chassis.setPose(47.936, -13.232, 180);
 
 	chassis.follow(Skills1_txt, 15, 5000, true);
 
 	chassis.turnToHeading(90, 1000);
-
-	chassis.follow(Skills2_txt, 15, 5000, true);
 	matchloader.set_value(HIGH);
+
+	chassis.follow(Skills2_txt, 15, 2000, true);
 	intake1.move_velocity(600);
 	intake2.move_velocity(600);
 	chassis.waitUntilDone();
-	pros::delay(1000);
+	pros::delay(500);
+	intake1.move_velocity(0);
+	intake2.move_velocity(0);
 
-	chassis.follow(Skills3_txt, 15, 3000, false);
+	chassis.follow(Skills3_txt, 15, 2000, false);
 
 	chassis.waitUntilDone();
-	IntakePistonB.set_value(HIGH);
-	pros::delay(1000);
+	IntakePistonB.set_value(LOW);
+	intake1.move_velocity(600);
+	intake2.move_velocity(600);
+	pros::delay(3500);
 
-	chassis.follow(Skills4_txt, 15, 6000, true);
+	chassis.follow(Skills4_txt, 15, 2000, true);
 	matchloader.set_value(LOW);
 	intake1.move_velocity(0);
 	intake2.move_velocity(0);
@@ -183,27 +188,31 @@ void Skills() {
 	chassis.follow(Skills6_txt, 15, 10000, true);
 
 	chassis.turnToHeading(315, 1000);
-
-
-	chassis.follow(Skills7_txt, 15, 10000, true);
 	matchloader.set_value(HIGH);
-	IntakePistonB.set_value(LOW);
+	IntakePistonB.set_value(HIGH);
+
+
+	chassis.follow(Skills7_txt, 15, 1000, true);
 
 	chassis.turnToHeading(270, 1000);
 
-	chassis.follow(Skills8_txt, 15, 5000, true);
+	chassis.follow(Skills8_txt, 15, 2000, true);
 	intake1.move_velocity(600);
 	intake2.move_velocity(600);
 
 
 	chassis.waitUntilDone();
 	pros::delay(1000);
+	intake1.move_velocity(0);
+	intake2.move_velocity(0);
 
-	chassis.follow(Skills9_txt, 15, 5000, false);
+	chassis.follow(Skills9_txt, 15, 2000, false);
 
 	chassis.waitUntilDone();
-	IntakePistonB.set_value(HIGH);
-	pros::delay(1000);
+	IntakePistonB.set_value(LOW);
+	intake1.move_velocity(600);
+	intake2.move_velocity(600);
+	pros::delay(3500);
 	matchloader.set_value(LOW);
 	intake1.move_velocity(0);
 	intake2.move_velocity(0);
@@ -217,7 +226,7 @@ void Skills() {
 
 	chassis.turnToHeading(270, 1000);
 	matchloader.set_value(HIGH);
-	IntakePistonB.set_value(LOW);
+	IntakePistonB.set_value(HIGH);
 
 	chassis.follow(Skills12_txt, 15, 5000, true);
 	intake1.move_velocity(600);
@@ -229,7 +238,7 @@ void Skills() {
 	chassis.follow(Skills13_txt, 15, 5000, false);
 
 	chassis.waitUntilDone();
-	IntakePistonB.set_value(HIGH);
+	IntakePistonB.set_value(LOW);
 	pros::delay(1000);
 	matchloader.set_value(LOW);
 	intake1.move_velocity(0);
@@ -353,8 +362,8 @@ void autonomous() {
  */
 void opcontrol() {
 	
-
-	descorer.set_value(HIGH);
+	IntakePistonB.set_value(HIGH);
+	//descorer.set_value(HIGH);
 	descorerState = false;
 	
 	//chassis.turnToHeading(90, 1000);
@@ -369,7 +378,7 @@ void opcontrol() {
 		//Intake
 		if(master.get_digital_new_press(DIGITAL_X))
 		{
-			if(IntakeState == 0)
+			if(IntakeState == 0 or IntakeState == 3)
 			{
 				intake1.move_velocity(600);
 				intake2.move_velocity(600);
@@ -403,10 +412,28 @@ void opcontrol() {
 			printf("Intake state=%d intake velocity=%f \n", IntakeState, intake1.get_actual_velocity());
 		}
 
+		if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_UP))
+		{
+			IntakePistonA.set_value(LOW);
+			IntakePistonB.set_value(LOW);
+		}
 
+		if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT))
+		{
+			IntakePistonA.set_value(LOW);
+			IntakePistonB.set_value(HIGH);
+		}
+
+		if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_LEFT))
+		{
+			IntakePistonA.set_value(HIGH);
+			IntakePistonB.set_value(HIGH);
+		}
+
+		
 
 		//Intake Piston A
-		if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L1))
+		/*if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L1))
 		{
 			if(IntakePistonAState == true)
 			{
@@ -438,7 +465,7 @@ void opcontrol() {
 			}
 			printf("Expansion state=%d \n", IntakePistonBState);
 		}
-
+		*/
 		
 		//MATCHLOADER
 		if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L2))
