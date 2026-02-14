@@ -102,12 +102,24 @@ lemlib::Chassis chassis(drivetrain, // drivetrain settings
 
 
 //AUTON//
-ASSET(Newtest_txt);
-ASSET(Newtest1_txt);
-ASSET(Newtest2_txt);
+
 //LEFT SIDE//
+ASSET(LeftSide1_txt);
+ASSET(LeftSide2_txt);
+ASSET(LeftSide3_txt);
+ASSET(LeftSide4_txt);
+ASSET(LeftSide5_txt);
+ASSET(LeftSide6_txt);
+ASSET(LeftSide7_txt);
 
 //RIGHT SIDE//
+ASSET(RightSide1_txt);
+ASSET(RightSide2_txt);
+ASSET(RightSide3_txt);
+ASSET(RightSide4_txt);
+ASSET(RightSide5_txt);
+ASSET(RightSide6_txt);
+ASSET(RightSide7_txt);
 
 //LEFT SIDE ELIMS//
 
@@ -130,10 +142,129 @@ ASSET(Skills13_txt);
 ASSET(Skills14_txt);
 ASSET(Skills15_txt);
 ASSET(Skills16_txt);
+ASSET(Skills17_txt);
+ASSET(Skills18_txt);
+ASSET(Skills19_txt);
+ASSET(Skills20_txt);
+ASSET(Skills21_txt);
 
-void RighSide() {}
+void RightSide() {
 
-void LeftSide() {}
+	IntakePistonB.set_value(HIGH);
+	descorer.set_value(HIGH);
+
+	chassis.setPose(-49.724, -15.243, 90);
+
+	chassis.follow(RightSide1_txt, 15, 5000, true);
+
+	pros::delay(500);
+	matchloader.set_value(HIGH);
+	intake1.move_velocity(600);
+	intake2.move_velocity(600);
+
+	chassis.turnToHeading(45, 1000);
+	pros::delay(500);
+	intake1.move_velocity(0);
+	intake2.move_velocity(0);
+	matchloader.set_value(LOW);
+
+	chassis.follow(RightSide2_txt, 15, 5000, true);
+	//IntakePistonA.set_value(HIGH);
+	pros::delay(500);
+	//matchloader.set_value(LOW);
+	intake1.move_velocity(-600);
+	intake2.move_velocity(-600);
+	pros::delay(2000);
+	intake1.move_velocity(0);
+	intake2.move_velocity(0);
+	//IntakePistonA.set_value(LOW);
+
+	chassis.follow(RightSide3_txt, 15, 5000, false);
+
+	chassis.turnToHeading(270, 1000);
+	matchloader.set_value(HIGH);
+
+	chassis.follow(RightSide4_txt, 15, 1000, true);
+	intake1.move_velocity(600);
+	intake2.move_velocity(600);
+	chassis.waitUntilDone();
+	pros::delay(200);
+	intake1.move_velocity(0);
+	intake2.move_velocity(0);
+
+	chassis.follow(RightSide5_txt, 15, 3000, false);
+	chassis.waitUntilDone();
+	IntakePistonB.set_value(LOW);
+	intake1.move_velocity(600);
+	intake2.move_velocity(600);
+	pros::delay(3500);
+	intake1.move_velocity(0);
+	intake2.move_velocity(0);
+
+	chassis.follow(RightSide6_txt, 15, 1000, true);
+	chassis.follow(RightSide7_txt, 15, 3000, false);
+	chassis.follow(RightSide6_txt, 15, 1000, true);
+}
+
+void LeftSide() {
+
+	IntakePistonB.set_value(HIGH);
+	descorer.set_value(HIGH);
+
+	chassis.setPose(-49.724, 15.243, 90);
+
+	chassis.follow(LeftSide1_txt, 15, 5000, true);
+
+	pros::delay(500);
+	matchloader.set_value(HIGH);
+	intake1.move_velocity(600);
+	intake2.move_velocity(600);
+
+	chassis.turnToHeading(315, 1000);
+	pros::delay(500);
+	intake1.move_velocity(0);
+	intake2.move_velocity(0);
+
+	chassis.follow(LeftSide2_txt, 15, 5000, false);
+	IntakePistonA.set_value(HIGH);
+	pros::delay(500);
+	matchloader.set_value(LOW);
+	intake1.move_velocity(600);
+	intake2.move_velocity(600);
+	pros::delay(2000);
+	intake1.move_velocity(0);
+	intake2.move_velocity(0);
+	IntakePistonA.set_value(LOW);
+
+	chassis.follow(LeftSide3_txt, 15, 5000, true);
+
+	chassis.turnToHeading(270, 1000);
+	matchloader.set_value(HIGH);
+
+	chassis.follow(LeftSide4_txt, 15, 1000, true);
+	intake1.move_velocity(600);
+	intake2.move_velocity(600);
+	chassis.waitUntilDone();
+	pros::delay(200);
+	intake1.move_velocity(0);
+	intake2.move_velocity(0);
+
+	chassis.follow(LeftSide5_txt, 15, 3000, false);
+	chassis.waitUntilDone();
+	IntakePistonB.set_value(LOW);
+	intake1.move_velocity(600);
+	intake2.move_velocity(600);
+	pros::delay(3500);
+	intake1.move_velocity(0);
+	intake2.move_velocity(0);
+
+	chassis.follow(LeftSide6_txt, 15, 1000, true);
+	chassis.follow(LeftSide7_txt, 15, 3000, false);
+	chassis.follow(LeftSide6_txt, 15, 1000, true);
+	
+
+
+}
 
 void RighSideElims() {}
 
@@ -142,6 +273,7 @@ void LeftSideElims() {}
 void Skills() {
 
 	IntakePistonB.set_value(HIGH);
+	descorer.set_value(HIGH);
 
 	chassis.setPose(47.936, -13.232, 180);
 
@@ -254,6 +386,40 @@ void Skills() {
 
 	chassis.follow(Skills16_txt, 15, 5000, true);
 
+	chassis.turnToHeading(135, 1000);
+
+	chassis.follow(Skills17_txt, 15, 5000, true);
+
+	chassis.turnToHeading(90, 1000);
+	matchloader.set_value(HIGH);
+	IntakePistonB.set_value(HIGH);
+
+	chassis.follow(Skills18_txt, 15, 3000, true);
+
+	intake1.move_velocity(600);
+	intake2.move_velocity(600);
+	chassis.waitUntilDone();
+	pros::delay(500);
+	intake1.move_velocity(0);
+	intake2.move_velocity(0);
+
+	chassis.follow(Skills19_txt, 15, 5000, false);
+
+	IntakePistonB.set_value(LOW);
+	chassis.waitUntilDone();
+	intake1.move_velocity(600);
+	intake2.move_velocity(600);
+	matchloader.set_value(LOW);
+	pros::delay(3500);
+	intake1.move_velocity(0);
+	intake2.move_velocity(0);
+
+	chassis.follow(Skills20_txt, 15, 5000, true);
+
+	chassis.turnToHeading(270, 1000);
+
+	chassis.follow(Skills21_txt, 15, 10000, false);
+
 }
 
 /**
@@ -269,7 +435,7 @@ void initialize() {
 
 	chassis.setPose(0, 0, 0);
 	
-    pros::Task screen_task([&]() {
+    /*pros::Task screen_task([&]() {
         while (true) {
             // print robot location to the brain screen
             pros::lcd::print(0, "X: %f", chassis.getPose().x); // x
@@ -278,7 +444,7 @@ void initialize() {
             // delay to save resources
             pros::delay(20);
         }
-    });
+    });*/
 }
 
 /**
@@ -316,35 +482,8 @@ void competition_initialize() {
 
 void autonomous() {
 
-	//chassis.calibrate();
-	
-	/*pros::delay(500);
-	
-	chassis.setPose(-44.823, 13.588, 90);
-	//matchloader.set_value(HIGH);
-	chassis.follow(Newtest_txt, 15, 5000, true);
-	pros::delay(500);
-	matchloader.set_value(HIGH);
-	chassis.turnToHeading(125, 1000);
-	chassis.follow(Newtest1_txt, 15, 5000, true);
-	pros::delay(500);
-	
-	pros::delay(3000);
-	chassis.follow(Newtest2_txt, 15, 5000, false);
-	chassis.waitUntilDone();
-	chassis.setPose(-45.498, 47.277, 125);
-	chassis.waitUntilDone();
-	chassis.turnToHeading(235, 1000);
-	chassis.waitUntilDone();*/
 	Skills();
-	//chassis.setPose(0,0,0);
-	//chassis.moveToPose(0, 48, 0, 10000);
-	/*frontstack.move_voltage(0);
-	backstack.move_voltage(0);
-	topstack.move_voltage(0);
-	driveR_train.move_voltage(0);
-	driveL_train.move_voltage(0);
-	printf("done");*/
+	printf("done");
 }
 
 /**
@@ -363,10 +502,8 @@ void autonomous() {
 void opcontrol() {
 	
 	IntakePistonB.set_value(HIGH);
-	//descorer.set_value(HIGH);
-	descorerState = false;
-	
-	//chassis.turnToHeading(90, 1000);
+	IntakePistonA.set_value(LOW);
+	descorerState = true;
 
 	while(true){
 		
@@ -375,7 +512,7 @@ void opcontrol() {
 
         chassis.arcade(leftY, rightX);
 
-		//Intake
+		//INTAKE
 		if(master.get_digital_new_press(DIGITAL_X))
 		{
 			if(IntakeState == 0 or IntakeState == 3)
@@ -412,6 +549,7 @@ void opcontrol() {
 			printf("Intake state=%d intake velocity=%f \n", IntakeState, intake1.get_actual_velocity());
 		}
 
+		//INTAKE STATE
 		if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_UP))
 		{
 			IntakePistonA.set_value(LOW);
@@ -430,42 +568,7 @@ void opcontrol() {
 			IntakePistonB.set_value(HIGH);
 		}
 
-		
 
-		//Intake Piston A
-		/*if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L1))
-		{
-			if(IntakePistonAState == true)
-			{
-				IntakePistonA.set_value(LOW);
-				IntakePistonAState = false;
-			}
-			else if(IntakePistonAState == false)
-			{
-				IntakePistonA.set_value(HIGH);
-				IntakePistonAState = true;
-			}
-			printf("Expansion state=%d \n", IntakePistonAState);
-		}
-		
-
-
-		//Intake Piston B
-		if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_R1))
-		{
-			if(IntakePistonBState == true)
-			{
-				IntakePistonB.set_value(LOW);
-				IntakePistonBState = false;
-			}
-			else
-			{
-				IntakePistonB.set_value(HIGH);
-				IntakePistonBState = true;
-			}
-			printf("Expansion state=%d \n", IntakePistonBState);
-		}
-		*/
 		
 		//MATCHLOADER
 		if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L2))
@@ -501,7 +604,6 @@ void opcontrol() {
 			printf("Expansion state=%d \n", matchloaderState);
 		}
 		printf("x: %f, y: %f, theta: %f \n", chassis.getPose().x, chassis.getPose().y, chassis.getPose().theta);
-		//printf("X: %f\n ", chassis.getPose().theta);
 		pros::delay(10);
 	};
 
