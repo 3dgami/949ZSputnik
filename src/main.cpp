@@ -339,7 +339,7 @@ void Skills() {
 	intake1.move_velocity(600);
 	intake2.move_velocity(600);
 
-	pros::delay(2000);
+	pros::delay(4000);
 
 	chassis.setPose(-31.122, -47, 270);
 	IntakePistonB.set_value(HIGH);
@@ -348,7 +348,7 @@ void Skills() {
 	intake1.move_velocity(600);
 	intake2.move_velocity(600);
 	chassis.waitUntilDone();
-	pros::delay(500);
+	pros::delay(1500);
 	intake1.move_velocity(0);
 	intake2.move_velocity(0);
 
