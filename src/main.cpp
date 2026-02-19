@@ -36,6 +36,20 @@ pros::adi::DigitalOut IntakePistonB('B');
 pros::adi::DigitalOut matchloader('C');
 pros::adi::DigitalOut descorer('D');
 
+void drivetrainVoltage(int left, int right, int timeout)
+{
+	driveL_train.move_velocity(left);
+	driveR_train.move_velocity(right);
+	int i = 0;
+	while(i < timeout)
+	{
+		i += 5;
+		pros::delay(5);
+	}
+	driveL_train.move_velocity(0);
+	driveR_train.move_velocity(0);
+
+}
 
 
 
@@ -58,7 +72,7 @@ lemlib::ControllerSettings lateral_controller(15, // proportional gain (kP)
                                               100, // small error range timeout, in milliseconds
                                               3, // large error range, in inches
                                               500, // large error range timeout, in milliseconds
-                                              20 // maximum acceleration (slew)
+                                              8 // maximum acceleration (slew)
 );
 
 // angular PID controller
@@ -147,6 +161,8 @@ ASSET(Skills18_txt);
 ASSET(Skills19_txt);
 ASSET(Skills20_txt);
 ASSET(Skills21_txt);
+ASSET(Skills35_txt);
+ASSET(Skills45_txt);
 
 void RightSide() {
 
@@ -156,21 +172,24 @@ void RightSide() {
 	chassis.setPose(-49.724, -15.243, 90);
 
 	chassis.follow(RightSide1_txt, 15, 5000, true);
+	intake1.move_velocity(600);
+	intake2.move_velocity(600);
 
 	pros::delay(500);
 	matchloader.set_value(HIGH);
-	intake1.move_velocity(600);
-	intake2.move_velocity(600);
+	pros::delay(500);
+	matchloader.set_value(LOW);
+	pros::delay(250);
 
 	chassis.turnToHeading(45, 1000);
 	pros::delay(500);
 	intake1.move_velocity(0);
 	intake2.move_velocity(0);
-	matchloader.set_value(LOW);
 
 	chassis.follow(RightSide2_txt, 15, 5000, true);
 	//IntakePistonA.set_value(HIGH);
 	pros::delay(500);
+	//chassis.setPose(-16,-16,45);
 	//matchloader.set_value(LOW);
 	intake1.move_velocity(-600);
 	intake2.move_velocity(-600);
@@ -182,7 +201,9 @@ void RightSide() {
 	chassis.follow(RightSide3_txt, 15, 5000, false);
 
 	chassis.turnToHeading(270, 1000);
+	chassis.waitUntilDone();
 	matchloader.set_value(HIGH);
+	pros::delay(500);
 
 	chassis.follow(RightSide4_txt, 15, 1000, true);
 	intake1.move_velocity(600);
@@ -211,7 +232,7 @@ void LeftSide() {
 	IntakePistonB.set_value(HIGH);
 	descorer.set_value(HIGH);
 
-	chassis.setPose(-49.724, 15.243, 90);
+	chassis.setPose(-47.277, 13.018, 90);
 
 	chassis.follow(LeftSide1_txt, 15, 5000, true);
 
@@ -221,47 +242,41 @@ void LeftSide() {
 	intake2.move_velocity(600);
 
 	chassis.turnToHeading(315, 1000);
-	pros::delay(500);
-	intake1.move_velocity(0);
-	intake2.move_velocity(0);
 
 	chassis.follow(LeftSide2_txt, 15, 5000, false);
 	IntakePistonA.set_value(HIGH);
-	pros::delay(500);
-	matchloader.set_value(LOW);
-	intake1.move_velocity(600);
-	intake2.move_velocity(600);
-	pros::delay(2000);
+	pros::delay(3000);
+	IntakePistonA.set_value(LOW);
 	intake1.move_velocity(0);
 	intake2.move_velocity(0);
-	IntakePistonA.set_value(LOW);
 
 	chassis.follow(LeftSide3_txt, 15, 5000, true);
 
 	chassis.turnToHeading(270, 1000);
-	matchloader.set_value(HIGH);
+	//matchloader.set_value(HIGH);
 
 	chassis.follow(LeftSide4_txt, 15, 1000, true);
 	intake1.move_velocity(600);
 	intake2.move_velocity(600);
 	chassis.waitUntilDone();
-	pros::delay(200);
+	pros::delay(400);
 	intake1.move_velocity(0);
 	intake2.move_velocity(0);
 
 	chassis.follow(LeftSide5_txt, 15, 3000, false);
 	chassis.waitUntilDone();
 	IntakePistonB.set_value(LOW);
+	pros::delay(400);
 	intake1.move_velocity(600);
 	intake2.move_velocity(600);
 	pros::delay(3500);
 	intake1.move_velocity(0);
 	intake2.move_velocity(0);
 
-	chassis.follow(LeftSide6_txt, 15, 1000, true);
+	/*chassis.follow(LeftSide6_txt, 15, 1000, true);
 	chassis.follow(LeftSide7_txt, 15, 3000, false);
 	chassis.follow(LeftSide6_txt, 15, 1000, true);
-	
+	*/
 
 
 }
@@ -270,14 +285,22 @@ void RighSideElims() {}
 
 void LeftSideElims() {}
 
+void Move() {
+
+	chassis.setPose(0, 0, 0);
+
+	chassis.moveToPoint(0, 2, 1000);
+
+
+}
 void Skills() {
 
 	IntakePistonB.set_value(HIGH);
 	descorer.set_value(HIGH);
 
-	chassis.setPose(47.936, -13.232, 180);
+	chassis.setPose(46.601, -15.457, 180);
 
-	chassis.follow(Skills1_txt, 15, 5000, true);
+	chassis.follow(Skills1_txt, 15, 2000, true);
 
 	chassis.turnToHeading(90, 1000);
 	matchloader.set_value(HIGH);
@@ -290,20 +313,68 @@ void Skills() {
 	intake1.move_velocity(0);
 	intake2.move_velocity(0);
 
-	chassis.follow(Skills3_txt, 15, 2000, false);
+	//chassis.follow(Skills2_txt, 15, 2000, false);
+	chassis.moveToPoint(46.601, -47, 2000, {.forwards=false});
+	matchloader.set_value(LOW);
+	chassis.turnToHeading(135, 1000);
 
-	chassis.waitUntilDone();
+	/*chassis.waitUntilDone();
 	IntakePistonB.set_value(LOW);
 	intake1.move_velocity(600);
 	intake2.move_velocity(600);
-	pros::delay(3500);
+	pros::delay(3500);*/
 
-	chassis.follow(Skills4_txt, 15, 2000, true);
-	matchloader.set_value(LOW);
+	chassis.follow(Skills35_txt, 15, 2000, false);
+	chassis.waitUntilDone();
+	chassis.follow(Skills4_txt, 15, 5000, true);
+	chassis.turnToHeading(90, 1000);
+	chassis.waitUntilDone();
+	chassis.follow(Skills45_txt, 15, 5000, false);
+	chassis.waitUntilDone();
+	matchloader.set_value(HIGH);
+	IntakePistonB.set_value(LOW);
+
+
+	drivetrainVoltage(-600, -100, 3000);
+	intake1.move_velocity(600);
+	intake2.move_velocity(600);
+
+	pros::delay(2000);
+
+	chassis.setPose(-31.122, -47, 270);
+	IntakePistonB.set_value(HIGH);
+
+	chassis.follow(Skills5_txt, 15, 2000, true);
+	intake1.move_velocity(600);
+	intake2.move_velocity(600);
+	chassis.waitUntilDone();
+	pros::delay(500);
 	intake1.move_velocity(0);
 	intake2.move_velocity(0);
 
-	chassis.waitUntilDone();
+	chassis.follow(Skills6_txt, 15, 3000, false);
+	//chassis.waitUntilDone();
+	matchloader.set_value(HIGH);
+	IntakePistonB.set_value(LOW);
+	pros::delay(350);
+	intake1.move_velocity(600);
+	intake2.move_velocity(600);
+	pros::delay(2000);
+	intake1.move_velocity(0);
+	intake2.move_velocity(0);
+
+	chassis.setPose(-31.122, -47, 270);
+	IntakePistonB.set_value(HIGH);
+
+	chassis.follow(Skills7_txt, 15, 2000, true);
+	chassis.turnToHeading(0, 1000);
+	chassis.follow(Skills8_txt, 15, 5000, true);
+
+
+
+	//chassis.moveToPoint(0, 10, 2000, {.forwards=false});
+
+	/*chassis.waitUntilDone();
 
 	chassis.turnToHeading(225, 1000);
 
@@ -418,7 +489,7 @@ void Skills() {
 
 	chassis.turnToHeading(270, 1000);
 
-	chassis.follow(Skills21_txt, 15, 10000, false);
+	chassis.follow(Skills21_txt, 15, 10000, false);*/
 
 }
 
@@ -482,7 +553,10 @@ void competition_initialize() {
 
 void autonomous() {
 
+	//LeftSide();
+	//Move();
 	Skills();
+	//RightSide();
 	printf("done");
 }
 
@@ -544,7 +618,7 @@ void opcontrol() {
 			{
 				intake1.move_velocity(0);
 				intake2.move_velocity(0);
-				IntakeState = 3;
+				IntakeState = 0;
 			}			
 			printf("Intake state=%d intake velocity=%f \n", IntakeState, intake1.get_actual_velocity());
 		}

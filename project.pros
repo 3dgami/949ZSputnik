@@ -1,7 +1,7 @@
 {
   "py/object": "pros.conductor.project.Project",
   "py/state": {
-    "project_name": "949ZSputnik",
+    "project_name": "Skills",
     "target": "v5",
     "templates": {
       "LemLib": {
@@ -652,7 +652,8 @@
       }
     },
     "upload_options": {
-      "icon": "clawbot"
+      "icon": "pros",
+      "slot": 1
     },
     "use_early_access": false
   }
