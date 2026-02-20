@@ -161,7 +161,7 @@ ASSET(Skills18_txt);
 ASSET(Skills19_txt);
 ASSET(Skills20_txt);
 ASSET(Skills21_txt);
-ASSET(Skills35_txt);
+//ASSET(Skills35_txt);
 ASSET(Skills45_txt);
 
 void RightSide() {
@@ -300,7 +300,7 @@ void Skills() {
 
 	chassis.setPose(46.601, -15.457, 180);
 
-	chassis.follow(Skills1_txt, 15, 2000, true);
+	chassis.follow(Skills1_txt, 15, 1000, true);
 
 	chassis.turnToHeading(90, 1000);
 	matchloader.set_value(HIGH);
@@ -314,9 +314,10 @@ void Skills() {
 	intake2.move_velocity(0);
 
 	//chassis.follow(Skills2_txt, 15, 2000, false);
-	chassis.moveToPoint(46.601, -47, 2000, {.forwards=false});
+	chassis.moveToPoint(46.601, -47, 1000, {.forwards=false});
+	pros::delay(500);
 	matchloader.set_value(LOW);
-	chassis.turnToHeading(135, 1000);
+	chassis.turnToHeading(135, 7500);
 
 	/*chassis.waitUntilDone();
 	IntakePistonB.set_value(LOW);
@@ -324,18 +325,18 @@ void Skills() {
 	intake2.move_velocity(600);
 	pros::delay(3500);*/
 
-	chassis.follow(Skills35_txt, 15, 2000, false);
+	chassis.follow(Skills3_txt, 15, 2000, false);
 	chassis.waitUntilDone();
-	chassis.follow(Skills4_txt, 15, 5000, true);
-	chassis.turnToHeading(90, 1000);
+	chassis.follow(Skills4_txt, 15, 750, true);
+	chassis.turnToHeading(90, 750);
 	chassis.waitUntilDone();
-	chassis.follow(Skills45_txt, 15, 5000, false);
+	chassis.follow(Skills5_txt, 15, 3000, false);
 	chassis.waitUntilDone();
 	matchloader.set_value(HIGH);
 	IntakePistonB.set_value(LOW);
 
 
-	drivetrainVoltage(-600, -100, 3000);
+	drivetrainVoltage(-600, -100, 2500);
 	intake1.move_velocity(600);
 	intake2.move_velocity(600);
 
@@ -344,7 +345,7 @@ void Skills() {
 	chassis.setPose(-31.122, -47, 270);
 	IntakePistonB.set_value(HIGH);
 
-	chassis.follow(Skills5_txt, 15, 2000, true);
+	chassis.follow(Skills6_txt, 15, 2000, true);
 	intake1.move_velocity(600);
 	intake2.move_velocity(600);
 	chassis.waitUntilDone();
@@ -352,7 +353,7 @@ void Skills() {
 	intake1.move_velocity(0);
 	intake2.move_velocity(0);
 
-	chassis.follow(Skills6_txt, 15, 3000, false);
+	chassis.follow(Skills7_txt, 15, 2000, false);
 	//chassis.waitUntilDone();
 	matchloader.set_value(HIGH);
 	IntakePistonB.set_value(LOW);
@@ -366,9 +367,9 @@ void Skills() {
 	chassis.setPose(-31.122, -47, 270);
 	IntakePistonB.set_value(HIGH);
 
-	chassis.follow(Skills7_txt, 15, 2000, true);
+	chassis.follow(Skills8_txt, 15, 1000, true);
 	chassis.turnToHeading(0, 1000);
-	chassis.follow(Skills8_txt, 15, 5000, true);
+	chassis.follow(Skills9_txt, 15, 5000, true);
 
 
 

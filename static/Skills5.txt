@@ -1,24 +1,34 @@
--31.122, -47, 87.217
--33.122, -47, 84.254
--35.122, -47, 81.184
--37.122, -47, 77.992
--39.122, -47, 74.665
--41.122, -47, 71.181
--43.122, -47, 67.519
--45.122, -47, 63.646
--47.122, -47, 59.521
--49.122, -47, 55.089
--51.122, -47, 50.267
--53.122, -47, 44.931
--55.122, -47, 38.869
--57.122, -47, 31.667
--59.122, -47, 22.244
--61.07, -47, 0
--61.07, -47, 0
--81.07, -47, 0
+32.808, -32.141, 99.083
+30.808, -32.135, 99.288
+28.808, -32.121, 99.754
+26.808, -32.101, 99.987
+24.808, -32.081, 99.428
+22.808, -32.066, 98.829
+20.808, -32.061, 98.523
+18.808, -32.074, 96.301
+16.809, -32.108, 93.626
+14.81, -32.17, 90.873
+12.812, -32.266, 88.033
+10.817, -32.401, 85.099
+8.824, -32.577, 82.06
+6.837, -32.797, 78.904
+4.855, -33.066, 75.617
+2.88, -33.381, 72.18
+0.913, -33.743, 68.571
+-1.045, -34.153, 64.761
+-2.993, -34.605, 60.712
+-4.93, -35.103, 56.374
+-6.856, -35.64, 51.672
+-8.772, -36.215, 46.497
+-10.675, -36.828, 40.67
+-12.568, -37.473, 33.853
+-14.451, -38.148, 25.259
+-16.8, -39.037, 0
+-16.8, -39.037, 0
+-35.505, -46.117, 0
 endData
 127
 100
 200
--31.122, -47, -46.096, -47, -46.096, -47, -61.07, -47
-#PATH.JERRYIO-DATA {"appVersion":"0.10.0","format":"LemLib v0.5","gc":{"robotWidth":13.625,"robotHeight":16,"robotIsHolonomic":false,"showRobot":true,"uol":2.54,"pointDensity":2,"controlMagnetDistance":1.968503937007874,"fieldImage":{"displayName":"V5RC 2026 - Push Back (Skills)","signature":"V5RC-PushBack-Skills-TopDownHighlighted-TileColor66_71","origin":{"__type":"built-in"}},"coordinateSystem":"VEX Gaming Positioning System"},"paths":[{"segments":[{"controls":[{"uid":"QP6zySyEkG","x":-31.122,"y":-47,"lock":false,"visible":true,"heading":270,"__type":"end-point"},{"uid":"ndGdzL9zzP","x":-61.07,"y":-47,"lock":false,"visible":true,"heading":270,"__type":"end-point"}],"speedProfiles":[],"lookaheadKeyframes":[],"uid":"O3XDUmAQkX"}],"pc":{"speedLimit":{"minLimit":{"value":0,"label":"0"},"maxLimit":{"value":127,"label":"127"},"step":1,"from":10,"to":100},"bentRateApplicableRange":{"minLimit":{"value":0,"label":"0"},"maxLimit":{"value":1,"label":"1"},"step":0.001,"from":0,"to":0.1},"maxDecelerationRate":127},"name":"Skills1","uid":"5EAmYR2jkr","lock":false,"visible":true}]}
+32.808, -32.141, 15.901, -32.141, 4.334, -30.806, -16.8, -39.037
+#PATH.JERRYIO-DATA {"appVersion":"0.10.0","format":"LemLib v0.5","gc":{"robotWidth":13.625,"robotHeight":16,"robotIsHolonomic":false,"showRobot":true,"uol":2.54,"pointDensity":2,"controlMagnetDistance":1.968503937007874,"fieldImage":{"displayName":"V5RC 2026 - Push Back (Skills)","signature":"V5RC-PushBack-Skills-TopDownHighlighted-TileColor66_71","origin":{"__type":"built-in"}},"coordinateSystem":"VEX Gaming Positioning System"},"paths":[{"segments":[{"controls":[{"uid":"Ry5RgUSLuC","x":32.808,"y":-32.141,"lock":false,"visible":true,"heading":270,"__type":"end-point"},{"uid":"AQvU3i9wwT","x":15.901474967227777,"y":-32.14108986101104,"lock":false,"visible":true,"__type":"control"},{"uid":"lvasL349m9","x":4.333530111382167,"y":-30.806326993028854,"lock":false,"visible":true,"__type":"control"},{"uid":"vxe7w5Wjf1","x":-16.800215298335775,"y":-39.037364678919,"lock":false,"visible":true,"heading":250,"__type":"end-point"}],"speedProfiles":[],"lookaheadKeyframes":[],"uid":"LPPOCmYz35"}],"pc":{"speedLimit":{"minLimit":{"value":0,"label":"0"},"maxLimit":{"value":127,"label":"127"},"step":1,"from":10,"to":100},"bentRateApplicableRange":{"minLimit":{"value":0,"label":"0"},"maxLimit":{"value":1,"label":"1"},"step":0.001,"from":0,"to":0.1},"maxDecelerationRate":127},"name":"Skills1","uid":"5EAmYR2jkr","lock":false,"visible":true}]}
